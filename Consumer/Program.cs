@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Consumer.EventStore;
+using Consumer.Plumbing;
+using Consumer.Plumbing.Factories;
 using Events;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
@@ -34,8 +37,15 @@ namespace Consumer
                 //things up. You should assume the subscription exists in your code.
                 CreateSubscription(connection);
 
+                IEventStoreEventHandlerFactory _eventHandlerFactory = WindsorContainerFactory.Create().Resolve<IEventStoreEventHandlerFactory>();
+                var eventStoreEventFactory = new DefaultEventStoreEventFactory();
+
                 connection.ConnectToPersistentSubscription(STREAM, GROUP, (_, x) =>
                 {
+                    var @event = eventStoreEventFactory.CreateFrom(x);
+                    var handler = _eventHandlerFactory.GetHandlerForEvent(@event);
+                    handler.Handle(@event);
+
                     var data = Encoding.ASCII.GetString(x.Event.Data);
                     var itemAddedToBasket = JsonConvert.DeserializeObject<ItemAddedToBasketEvent>(data);
                     Console.WriteLine($"[{consumerNumber}] received event ID {itemAddedToBasket.CustomEventId}");

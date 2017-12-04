@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="20.0.2" />
     <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
   </ItemGroup>
 

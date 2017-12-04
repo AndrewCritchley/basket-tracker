@@ -3,7 +3,7 @@ using EventStore.ClientAPI;
 
 namespace Events
 {
-    public class ItemAddedToBasketEvent  : IEventMetaDataEvent
+    public class ItemRemovedFromBasketEvent : IEventMetaDataEvent
     {
         public string ItemName { get; set; }
         public int CustomerId { get; set; }
@@ -15,10 +15,5 @@ namespace Events
         public IEventStoreMetaData ConsumedEventMetaData { get; }
         public bool EventDataAvailable { get; }
         public EventMetaData EventMetaData { get; set; }
-    }
-
-    public interface IEventMetaDataEvent
-    {
-        EventMetaData EventMetaData { get; set; }
     }
 }
