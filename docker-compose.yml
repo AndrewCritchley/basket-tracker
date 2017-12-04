@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  consumer:
+    image: consumer
+    build:
+      context: ./Consumer
+      dockerfile: Dockerfile
+  producer:
+    image: producer
+    build:
+      context: ./Producer
+      dockerfile: Dockerfile
