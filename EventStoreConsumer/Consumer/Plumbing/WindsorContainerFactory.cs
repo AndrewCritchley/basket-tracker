@@ -18,7 +18,7 @@ namespace Consumer.Plumbing
                 Container.Kernel.Resolver.AddSubResolver(new ArrayResolver(Container.Kernel));
                 Container.AddFacility<TypedFactoryFacility>();
 
-                Container.Install(new EventHandlerInstaller());
+                Container.Install(new ConfigurationInstaller());
 
                 return Container;
             }

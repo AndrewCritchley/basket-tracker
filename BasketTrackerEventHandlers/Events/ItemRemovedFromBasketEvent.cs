@@ -1,5 +1,4 @@
 ﻿using Common;
-using EventStore.ClientAPI;
 
 namespace Events
 {
@@ -8,12 +7,6 @@ namespace Events
         public string ItemName { get; set; }
         public int CustomerId { get; set; }
         public int CustomEventId { get; set; }
-        public IEventStoreMetaData ActualEventMetaData { get; }
-        public bool IsSystemEvent { get; }
-        public byte[] Data { get; }
-        public byte[] MetaData { get; }
-        public IEventStoreMetaData ConsumedEventMetaData { get; }
-        public bool EventDataAvailable { get; }
         public EventMetaData EventMetaData { get; set; }
     }
 }

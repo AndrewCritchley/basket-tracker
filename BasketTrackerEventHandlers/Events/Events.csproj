@@ -1,16 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Common">
-      <HintPath>..\..\EventStoreConsumer\Common\bin\Debug\netcoreapp2.0\Common.dll</HintPath>
+      <HintPath>..\..\EventStoreConsumer\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>
     </Reference>
   </ItemGroup>
 

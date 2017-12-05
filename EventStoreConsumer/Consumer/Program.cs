@@ -1,7 +1,7 @@
 ﻿using System;
-using Consumer.Configuration;
-using Consumer.EventStore;
 using Consumer.Plumbing;
+using EventProcessor.Configuration;
+using EventProcessor.EventStore;
 
 namespace Consumer
 {

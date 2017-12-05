@@ -3,7 +3,7 @@ using Castle.Facilities.TypedFactory;
 using Common;
 using Newtonsoft.Json;
 
-namespace Consumer.Plumbing.Factories
+namespace EventProcessor.Plumbing.Factories
 {
     /// <summary>
     /// Source and release IEventStoreEventHandlers on demand

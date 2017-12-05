@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Reference Include="Common">
-      <HintPath>..\..\EventStoreConsumer\Common\bin\Debug\netcoreapp2.0\Common.dll</HintPath>
+      <HintPath>..\..\EventStoreConsumer\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -1,26 +1,29 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Common;
-using EventHandlers;
 using Events;
 using Persistence;
-using Persistence.Model;
 
 namespace EventHandlers
 {
     public class ItemRemovedFromBasketEventHandler : IEventHandler<ItemRemovedFromBasketEvent>
     {
-        public void HandleEvent(ItemRemovedFromBasketEvent @event)
+        public async Task<EventProcessingState> HandleEventAsync(ItemRemovedFromBasketEvent @event)
         {
             using (var context = new BasketStateContext())
             {
                 context.Database.EnsureCreated();
-                context.BasketItems.Add(new BasketItem()
-                {
-                    ItemName = @event.ItemName,
-                    CustomerId = @event.CustomerId,
-                });
-                context.SaveChanges();
+                var item = context.BasketItems.Single(e =>
+                    e.ItemName == @event.ItemName && e.CustomerId == @event.CustomerId);
+
+
+                context.BasketItems.Remove(item);
+
+                await context.SaveChangesAsync();
                 Console.WriteLine($"Item {@event.ItemName} was removed from the basket");
+
+                return EventProcessingState.Success;
             }
         }
     }

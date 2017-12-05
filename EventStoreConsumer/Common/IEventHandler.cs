@@ -1,7 +1,9 @@
-﻿namespace Common
+﻿using System.Threading.Tasks;
+
+namespace Common
 {
     public interface IEventHandler<TEvent>
     {
-        void HandleEvent(TEvent @event);
+        Task<EventProcessingState> HandleEventAsync(TEvent @event);
     }
 }

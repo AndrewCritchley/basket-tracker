@@ -1,7 +1,7 @@
 ﻿using Common;
 using EventStore.ClientAPI;
 
-namespace Consumer.EventStore
+namespace EventProcessor.EventStore
 {
     public interface IEventStoreEventFactory
     {

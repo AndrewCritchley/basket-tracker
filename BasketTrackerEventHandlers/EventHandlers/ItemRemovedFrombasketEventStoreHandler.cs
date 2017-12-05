@@ -18,9 +18,7 @@ namespace EventHandlers
         public async Task<EventProcessingState> HandleAsync(IEventStoreEvent eventStoreEvent)
         {
             ItemRemovedFromBasketEvent deserializedEvent = GetDeserializedEvent(eventStoreEvent);
-            _eventHandler.HandleEvent(deserializedEvent);
-
-            return EventProcessingState.Success;
+            return await _eventHandler.HandleEventAsync(deserializedEvent);
         }
 
         private ItemRemovedFromBasketEvent GetDeserializedEvent(IEventStoreEvent eventStoreEvent)

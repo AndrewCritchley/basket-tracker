@@ -2,21 +2,20 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Consumer.Configuration;
 using Consumer.DynamicLoader;
-using Consumer.EventStore;
-using Consumer.Plumbing.Factories;
+using EventProcessor.Configuration;
+using EventProcessor.EventStore;
+using EventProcessor.Plumbing.Factories;
 using log4net;
-using Microsoft.Extensions.DependencyModel;
 
 namespace Consumer.Plumbing.Installers
 {
-    public class EventHandlerInstaller : IWindsorInstaller
+    public class ConfigurationInstaller : IWindsorInstaller
     {
         private static readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -41,7 +40,7 @@ namespace Consumer.Plumbing.Installers
         public void AddHandlersToContainer(IWindsorContainer container)
         {
             _logger.Debug("Adding handlers via dynamic loading");
-               var asl = new AssemblyLoader();
+            var asl = new AssemblyLoader();
 
             var configuration = new EventStoreHandlerConfiguration();
 
@@ -55,9 +54,9 @@ namespace Consumer.Plumbing.Installers
             foreach (var assemblyPath in assembliesToLoad)
             {
                 _logger.Debug($"Loading assembly '{assemblyPath}'");
-                    var asm = asl.LoadFromAssemblyPath(assemblyPath);
-             //   var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(configuration.AssemblyPath);
-         //       var asm = AssemblyLoader.Load(assemblyPath);
+                var asm = asl.LoadFromAssemblyPath(assemblyPath);
+                //   var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(configuration.AssemblyPath);
+                //       var asm = AssemblyLoader.Load(assemblyPath);
                 var allTypes = asm.GetTypes().ToList();
                 var installers = allTypes.Where(e => typeof(IWindsorInstaller).IsAssignableFrom(e));
                 _logger.Info($"Found {installers.Count()} installers ({string.Join(",", installers.Select(e => e.Name))})");

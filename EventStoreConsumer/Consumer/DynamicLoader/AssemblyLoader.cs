@@ -23,21 +23,28 @@ namespace Consumer.DynamicLoader
         public static Assembly Load(string assemblyName)
         {
             var assemblyFullPath =
-                $@"D:\Github\EventStoreDotnetCoreConsumer\BasketTrackerEventHandlers\EventHandlers\bin\Debug\netcoreapp2.0\{
+                $@"D:\Github\EventStoreDotnetCoreConsumer\BasketTrackerEventHandlers\EventHandlers\bin\Debug\netstandard2.0\{
                         assemblyName
                     }.dll";
-
 
             var fileNameWithOutExtension = Path.GetFileNameWithoutExtension(assemblyFullPath);
 
             var inCompileLibraries = DependencyContext.Default.CompileLibraries.Any(l => l.Name.Equals(fileNameWithOutExtension, StringComparison.OrdinalIgnoreCase));
             var inRuntimeLibraries = DependencyContext.Default.RuntimeLibraries.Any(l => l.Name.Equals(fileNameWithOutExtension, StringComparison.OrdinalIgnoreCase));
 
-            var assembly = (inCompileLibraries || inRuntimeLibraries)
-                ? Assembly.Load(new AssemblyName(fileNameWithOutExtension))
-                : AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
+            try
+            {
+                var assembly = (inCompileLibraries || inRuntimeLibraries)
+                    ? Assembly.Load(new AssemblyName(fileNameWithOutExtension))
+                    : AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFullPath);
 
-            return assembly;
+                return assembly;
+            }
+            catch
+            {
+                return null;
+            }
         }
+        
     }
 }

@@ -18,9 +18,7 @@ namespace EventHandlers
         {
             ItemAddedToBasketEvent deserializedEvent = GetDeserializedEvent(eventStoreEvent);
 
-             side_eventHandler.HandleEvent(deserializedEvent);
-
-            return EventProcessingState.Success;
+            return await _eventHandler.HandleEventAsync(deserializedEvent);
         }
 
         private ItemAddedToBasketEvent GetDeserializedEvent(IEventStoreEvent eventStoreEvent)

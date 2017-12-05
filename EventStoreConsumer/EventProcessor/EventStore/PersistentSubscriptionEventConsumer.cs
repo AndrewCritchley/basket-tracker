@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Consumer.Configuration;
-using Consumer.Plumbing.Factories;
+using EventProcessor.Configuration;
+using EventProcessor.Plumbing.Factories;
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 
-namespace Consumer.EventStore
+namespace EventProcessor.EventStore
 {
     public interface IEventConsumer
     {
@@ -19,6 +21,11 @@ namespace Consumer.EventStore
         private readonly IEventStoreEventHandlerFactory _eventHandlerFactory;
         private readonly DefaultEventStoreEventFactory _eventStoreEventFactory;
         private readonly IEventStoreConnection _eventStoreConnection;
+
+        /// <summary>
+        /// This is just temporary - for benchmarking as I go along
+        /// </summary>
+        private List<DateTime> _last10EventProcessTimes = new List<DateTime>();
 
         public PersistentSubscriptionEventConsumer(IEventStoreConfiguration eventStoreConfiguration,
             IEventStoreEventHandlerFactory eventHandlerFactory)
@@ -52,7 +59,28 @@ namespace Consumer.EventStore
 
         private async Task EventAppeared(EventStorePersistentSubscriptionBase _, ResolvedEvent e)
         {
-            Console.WriteLine("Handling event");
+            var strParts = new Dictionary<string, string>()
+            {
+                {"EventType", e.Event.EventType},
+                {"EventId", e.OriginalEventNumber.ToString()},
+                { "Stream", e.OriginalStreamId }
+            };
+
+            _last10EventProcessTimes.Add(DateTime.Now);
+
+            if (_last10EventProcessTimes.Count % 1000 == 0)
+            {
+                var last10 = _last10EventProcessTimes.OrderByDescending(ee => ee).Take(1000).ToList();
+                var first = last10.Min();
+                var last = last10.Max();
+
+                var timeForLast10 = last - first;
+                Console.WriteLine($"{timeForLast10.TotalSeconds}s per 1000 events");
+
+                _last10EventProcessTimes = new List<DateTime>();
+            }
+
+       //     Console.WriteLine(String.Join(", ", strParts.Select(s => $"{s.Key} = {s.Value}")));
             var @event = _eventStoreEventFactory.CreateFrom(e);
             var handler = _eventHandlerFactory.GetHandlerForEvent(@event);
             await handler.HandleAsync(@event);
@@ -103,6 +131,7 @@ namespace Consumer.EventStore
 
         private void ReleaseUnmanagedResources()
         {
+            Console.WriteLine("DISPOSING!!");
             _eventStoreConnection.Dispose();
         }
 
