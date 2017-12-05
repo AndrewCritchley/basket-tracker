@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="20.0.2" />
+    <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Events\Events.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Common">
+      <HintPath>..\..\EventStoreConsumer\Common\bin\Debug\netcoreapp2.0\Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>
