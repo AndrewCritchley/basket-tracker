@@ -1,4 +1,4 @@
-﻿namespace Consumer.EventHandlers
+﻿namespace Common
 {
     public interface IEventHandler<TEvent>
     {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using Castle.Facilities.TypedFactory;
-using Consumer.EventHandlers;
-using Consumer.EventStore;
+using Common;
 using Events;
 using Newtonsoft.Json;
 

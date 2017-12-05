@@ -1,13 +1,11 @@
-﻿using Castle.Facilities.TypedFactory;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Consumer.EventHandlers;
-using Consumer.EventStore;
-using Consumer.Plumbing.Factories;
+using Common;
+using Consumer.Plumbing;
 using Events;
 
-namespace Consumer.Plumbing
+namespace EventHandlers
 {
     public class EventHandlerInstaller : IWindsorInstaller
     {
@@ -18,10 +16,6 @@ namespace Consumer.Plumbing
 
             container.Register(Component.For<IEventHandler<ItemRemovedFromBasketEvent>>()
                 .ImplementedBy<ItemRemovedFromBasketEventHandler>().LifestyleSingleton());
-
-            container.Register(Component.For<IEventStoreEventHandlerFactory>()
-                .AsFactory(c => c.SelectedWith(new DefaultEventStoreEventHandlerSelectorFactory()))
-                .LifestyleSingleton());
 
             container.Register(Component.For<IEventStoreEventHandler>()
                 .ImplementedBy<ItemAddedTobasketEventStoreHandler>().LifestyleSingleton()

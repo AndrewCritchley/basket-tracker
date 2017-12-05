@@ -1,4 +1,5 @@
-﻿using EventStore.ClientAPI;
+﻿using Common;
+using EventStore.ClientAPI;
 
 namespace Consumer.EventStore
 {

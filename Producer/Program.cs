@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 using Events;
 using EventStore.ClientAPI;
@@ -73,7 +72,9 @@ namespace Producer
                             ExpectedVersion.Any, eventData).Result;
                     }
 
-                    Task.Delay(new TimeSpan(0, 0, 1)).Wait();
+                    Console.WriteLine("Wrote item to event stream" + random.Next(0, int.MaxValue));
+
+                    //    Task.Delay(new TimeSpan(0, 0, 0, 0, 200)).Wait();
 
                 }
             }

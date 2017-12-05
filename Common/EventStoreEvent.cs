@@ -2,11 +2,8 @@
 using System.Text;
 using EventStore.ClientAPI;
 
-namespace Consumer.EventStore
+namespace Common
 {
-    /// <summary>
-    /// Abstraction / wrapper for  the EventStore ResolvedEvent class which makes it easier to test with
-    /// </summary>
     public interface IEventStoreEvent
     {
         IEventStoreMetaData ActualEventMetaData { get; }
@@ -39,9 +36,6 @@ namespace Consumer.EventStore
         bool EventDataAvailable { get; }
     }
 
-    /// <summary>
-    /// Abstraction / wrapper for  the EventStore ResolvedEvent class which makes it easier to test with
-    /// </summary>
     public class EventStoreEvent : IEventStoreEvent
     {
         private RecordedEvent RecordedEvent => ResolvedEvent.Event ?? ResolvedEvent.OriginalEvent;
@@ -64,7 +58,6 @@ namespace Consumer.EventStore
             if (ResolvedEvent.Event == null)
             {
                 EventDataAvailable = false;
-              //  ActualEventMetaData = new NullEventStoreMetaData();
             }
             else
             {
@@ -73,52 +66,11 @@ namespace Consumer.EventStore
             }
         }
 
-        /// <summary>
-        /// Outputs meta data references only (no real data because it might be sensitive and ToString is likely to be used for logging purposes!)
-        /// Uses ResolvedEvent rather than properties as nullable check needed for unit test scenarios
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine($"Actual: {ActualEventMetaData}");
             builder.AppendLine($"Consumed: {ConsumedEventMetaData}");
-            return builder.ToString();
-        }
-    }
-
-    public interface IEventStoreMetaData
-    {
-        long EventNumber { get; }
-        string EventType { get; }
-        string EventStreamId { get; }
-        Guid EventId { get; }
-    }
-
-    public class EventStoreMetaData : IEventStoreMetaData
-    {
-        private readonly RecordedEvent _event;
-
-        public EventStoreMetaData(RecordedEvent @event)
-        {
-            _event = @event;
-        }
-
-        public long EventNumber => _event.EventNumber;
-
-        public string EventType => _event.EventType;
-
-        public string EventStreamId => _event.EventStreamId;
-
-        public Guid EventId => _event.EventId;
-
-        public override string ToString()
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine($"EventNumber: {_event?.EventNumber}");
-            builder.AppendLine($"EventType: {_event?.EventType}");
-            builder.AppendLine($"EventStreamId: {_event?.EventStreamId}");
-            builder.AppendLine($"EventId: {_event?.EventId}");
             return builder.ToString();
         }
     }

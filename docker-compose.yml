@@ -6,8 +6,17 @@ services:
     build:
       context: ./Consumer
       dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
   producer:
     image: producer
     build:
       context: ./Producer
       dockerfile: Dockerfile
+  sqlserver:
+    image: microsoft/mssql-server-linux
+    ports:
+      - 1401:1433
+    environment:
+      SA_PASSWORD: "password123"
+      ACCEPT_EULA: "Y"

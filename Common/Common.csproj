@@ -8,8 +8,4 @@
     <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.0.3-rc" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
 </Project>
