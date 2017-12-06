@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using ServiceApi;
 
 namespace WindowsServiceConsumer
 {
@@ -14,6 +15,18 @@ namespace WindowsServiceConsumer
         /// </summary>
         static void Main()
         {
+            using (var serviceApi = ServiceApiHostBuilder.BuildWebHost(null))
+            {
+                serviceApi.Start();
+
+                Console.WriteLine("Waiting for events. press enter to exit");
+                Console.ReadLine();
+                while (true)
+                {
+                    //HACK; System.ReadLine() doesn't have execution here.
+                }
+            }
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {

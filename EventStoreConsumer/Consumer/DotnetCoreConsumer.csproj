@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\EventProcessor\EventProcessor.csproj" />
+    <ProjectReference Include="..\ServiceApi\ServiceApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

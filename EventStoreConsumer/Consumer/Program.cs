@@ -2,6 +2,7 @@
 using Consumer.Plumbing;
 using EventProcessor.Configuration;
 using EventProcessor.EventStore;
+using ServiceApi;
 
 namespace Consumer
 {
@@ -13,13 +14,18 @@ namespace Consumer
 
             var windsorContainer = WindsorContainerFactory.Create();
 
-            var eventConsumer = windsorContainer.Resolve<IEventConsumer>();
             var eventStoreConfiguration = windsorContainer.Resolve<IEventStoreConfiguration>();
+            var eventConsumer = windsorContainer.Resolve<IEventConsumer>();
 
             eventConsumer.SubscribeToStream(eventStoreConfiguration.EventStoreStreamToProcess, eventStoreConfiguration.EventStoreGroup).Wait();
 
-            Console.WriteLine("Waiting for events. press enter to exit");
-            Console.ReadLine();
+            using (var serviceApi = ServiceApiHostBuilder.BuildWebHost(args))
+            {
+                serviceApi.Start();
+
+                Console.WriteLine("Waiting for events. press enter to exit");
+                Console.ReadLine();
+            }
         }
     }
 }

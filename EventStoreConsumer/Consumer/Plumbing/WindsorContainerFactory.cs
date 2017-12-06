@@ -2,7 +2,8 @@
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
-using Consumer.Plumbing.Installers;
+using Castle.Windsor.Installer;
+using ConfigurationInstaller = Consumer.Plumbing.Installers.ConfigurationInstaller;
 
 namespace Consumer.Plumbing
 {
